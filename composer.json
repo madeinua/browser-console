@@ -2,6 +2,7 @@
   "name": "madeinua/browser-console",
   "type": "project",
   "description": "PHP to browser console logging",
+  "minimum-stability": "stable",
   "keywords": [
     "PHP",
     "browser",
