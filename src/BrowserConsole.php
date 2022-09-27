@@ -32,13 +32,12 @@ class BrowserConsole extends AbstractLogger
         ));
     }
 
-
     /**
      * @param string $level
      * @param string|\Stringable $message
      * @param array $context
      */
-    public function log($level, string|\Stringable $message, array $context = []): void
+    public function log($level, $message, array $context = []): void
     {
         $message = empty($message)
             ? '""'
