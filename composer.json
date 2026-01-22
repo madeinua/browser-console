@@ -1,13 +1,14 @@
 {
   "name": "madeinua/browser-console",
-  "type": "project",
-  "description": "PHP to browser console logging",
-  "minimum-stability": "dev",
+  "type": "library",
+  "description": "PHP to browser console logging with Laravel integration",
   "keywords": [
-    "PHP",
+    "php",
     "browser",
     "console",
-    "logging"
+    "logging",
+    "laravel",
+    "debug"
   ],
   "license": "MIT",
   "authors": [
@@ -17,11 +18,42 @@
     }
   ],
   "require": {
-    "php": "^8.0.0"
+    "php": "^8.0",
+    "psr/log": "^2.0|^3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0|^11.0"
+  },
+  "suggest": {
+    "illuminate/support": "Required for Laravel ServiceProvider and Facade integration (^10.0|^11.0)"
   },
   "autoload": {
     "psr-4": {
       "BrowserConsole\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BrowserConsole\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "BrowserConsole\\BrowserConsoleServiceProvider"
+      ],
+      "aliases": {
+        "Console": "BrowserConsole\\Facades\\Console"
+      }
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "scripts": {
+    "test": "phpunit",
+    "test-coverage": "phpunit --coverage-html coverage"
   }
 }

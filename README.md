@@ -1,66 +1,184 @@
-# Browser console logger
+# Browser Console Logger
 
-## About
+A simple PHP class to log messages directly to the browser console. PSR-3 Logger Interface compatible with Laravel integration.
 
-A simple PHP class to log messages directly to the browser console.
+## Requirements
 
-PSR-3: Logger Interface compatible.
+- PHP 8.0 or higher
+- PSR-3 Log (psr/log) ^2.0 or ^3.0
 
 ## Installation
 
-Just add this line to your composer.json file:
+```bash
+composer require madeinua/browser-console
+```
 
-`"madeinua/browser-console": "master"`
+### Laravel Integration
 
-or run
+The package auto-discovers in Laravel 5.5+. For older versions, add the service provider and facade to `config/app.php`:
 
-`composer require madeinua/browser-console`
+```php
+'providers' => [
+    // ...
+    BrowserConsole\BrowserConsoleServiceProvider::class,
+],
+
+'aliases' => [
+    // ...
+    'Console' => BrowserConsole\Facades\Console::class,
+],
+```
+
+Publish the configuration file (optional):
+
+```bash
+php artisan vendor:publish --tag=browser-console-config
+```
 
 ## Usage
 
-Run the PHP script:
+### Static Method (Quick Usage)
 
 ```php
-\BrowserConsole\BrowserConsole::show('Hello World!');
+use BrowserConsole\BrowserConsole;
+
+// Simple message
+BrowserConsole::show('Hello World!');
+
+// Output: console.log("Hello World!")
 ```
 
-Then check out the browser console for the message "Hello World!".
-
-### Additional features
-
-Using the context:
+### Context Interpolation
 
 ```php
-\BrowserConsole\BrowserConsole::show('Hello {user}!', ['user' => 'Mark']);
+BrowserConsole::show('Hello {user}!', ['user' => 'Mark']);
 
-# >> Hello Mark!
+// Output: console.log("Hello Mark!")
 ```
 
-Including the date/time:
+### Including Timestamp
 
 ```php
-\BrowserConsole\BrowserConsole::show('Hello', [], true);
+BrowserConsole::show('Hello', [], true);
 
-# >> [2022-01-01 15:00:00] Hello
+// Output: console.log("[2024-01-01 15:00:00] Hello")
 ```
 
-Using the PSR-3: Logger Interface layer:
+### Different Data Types
 
 ```php
-$logger = new BrowserConsole\BrowserConsole();
-$logger->error('Some error');
+// Arrays (displayed as expandable objects in browser console)
+BrowserConsole::show(['name' => 'John', 'age' => 30]);
+// Output: console.log({"name":"John","age":30})
 
-# >> Some error
+// Numbers
+BrowserConsole::show(42);
+// Output: console.log(42)
 
-$logger->info('Info');
+// Booleans
+BrowserConsole::show(true);
+// Output: console.log(true)
 
-# >> Info
-
-$logger->log('info', 'Info message');
-
-# >> Info message
-
-$logger->log('alert', 'Hi {name}.', ['name' => 'John']);
-
-# >> Hi John.
+// Null
+BrowserConsole::show(null);
+// Output: console.log(null)
 ```
+
+### PSR-3 Logger Interface
+
+```php
+use BrowserConsole\BrowserConsole;
+
+$logger = new BrowserConsole();
+
+// Different log levels
+$logger->emergency('System is down!');
+$logger->alert('Alert message');
+$logger->critical('Critical error');
+$logger->error('Error occurred');
+$logger->warning('Warning message');
+$logger->notice('Notice');
+$logger->info('Information');
+$logger->debug('Debug info');
+
+// With context interpolation
+$logger->info('User {user} logged in', ['user' => 'John']);
+// Output: console.info("User John logged in")
+```
+
+### Laravel Facade
+
+```php
+use BrowserConsole\Facades\Console;
+
+Console::info('Information message');
+Console::error('Error message');
+Console::show(['data' => 'value']);
+```
+
+### Laravel Models and Collections
+
+The logger automatically handles Laravel models and collections:
+
+```php
+use App\Models\User;
+
+// Single model
+BrowserConsole::show(User::find(1));
+
+// Collection
+BrowserConsole::show(User::all());
+```
+
+### Enable/Disable Output
+
+```php
+$logger = new BrowserConsole(enabled: false);
+$logger->info('This will not output anything');
+
+// Or toggle
+$logger->setEnabled(true);
+$logger->info('Now it outputs');
+```
+
+### Laravel Configuration
+
+In your `.env` file:
+
+```env
+BROWSER_CONSOLE_ENABLED=true  # Set to false in production
+```
+
+Or in `config/browser-console.php`:
+
+```php
+return [
+    'enabled' => env('BROWSER_CONSOLE_ENABLED', true),
+];
+```
+
+## Output
+
+All messages are output as JavaScript `<script>` tags:
+
+```html
+<script>console.log("Hello World!")</script>
+<script>console.info("Info message")</script>
+<script>console.error("Error message")</script>
+```
+
+## Testing
+
+```bash
+composer test
+```
+
+Or with PHPUnit directly:
+
+```bash
+./vendor/bin/phpunit
+```
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
