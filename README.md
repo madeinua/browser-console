@@ -21,7 +21,7 @@ or run
 Run the PHP script:
 
 ```php
-BrowserConsole\BrowserConsole::show('Hello World!');
+\BrowserConsole\BrowserConsole::show('Hello World!');
 ```
 
 Then check out the browser console for the message "Hello World!".
@@ -31,7 +31,7 @@ Then check out the browser console for the message "Hello World!".
 Using the context:
 
 ```php
-BrowserConsole\BrowserConsole::show('Hello {user}!', ['user' => 'Mark']);
+\BrowserConsole\BrowserConsole::show('Hello {user}!', ['user' => 'Mark']);
 
 # >> Hello Mark!
 ```
@@ -39,7 +39,7 @@ BrowserConsole\BrowserConsole::show('Hello {user}!', ['user' => 'Mark']);
 Including the date/time:
 
 ```php
-BrowserConsole\BrowserConsole::show('Hello', [], true);
+\BrowserConsole\BrowserConsole::show('Hello', [], true);
 
 # >> [2022-01-01 15:00:00] Hello
 ```
