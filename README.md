@@ -15,20 +15,6 @@ composer require madeinua/browser-console
 
 ### Laravel Integration
 
-The package auto-discovers in Laravel 5.5+. For older versions, add the service provider and facade to `config/app.php`:
-
-```php
-'providers' => [
-    // ...
-    BrowserConsole\BrowserConsoleServiceProvider::class,
-],
-
-'aliases' => [
-    // ...
-    'Console' => BrowserConsole\Facades\Console::class,
-],
-```
-
 Publish the configuration file (optional):
 
 ```bash
@@ -79,9 +65,6 @@ BrowserConsole::show(42);
 BrowserConsole::show(true);
 // Output: console.log(true)
 
-// Null
-BrowserConsole::show(null);
-// Output: console.log(null)
 ```
 
 ### PSR-3 Logger Interface
